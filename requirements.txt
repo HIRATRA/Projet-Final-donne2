@@ -1,0 +1,6 @@
+pandas
+requests
+sqlalchemy
+python-dotenv
+jupyter
+apache-airflow

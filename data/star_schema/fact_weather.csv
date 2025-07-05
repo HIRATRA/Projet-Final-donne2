@@ -1,0 +1,2 @@
+timestamp,time_id,city_id,condition_id,temperature,humidity,wind_speed,rain
+2025-07-05 05:55:41.547231+00:00,2025-07-05,antananarivo,few_clouds,12.98,71,2.57,0.0
