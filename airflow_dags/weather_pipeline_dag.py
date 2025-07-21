@@ -1,7 +1,6 @@
 import os
 import sys
 from datetime import datetime, timedelta
-from pendulum import timezone
 
 
 # 🔧 Ajouter le chemin du dossier etl à sys.path
@@ -9,12 +8,11 @@ etl_path = "/mnt/c/Users/1040 G6/Desktop/project/weather-tourism-project/etl"
 if etl_path not in sys.path:
     sys.path.insert(0, etl_path)
 
-#  Imports Airflow 3.x
+# 📦 Imports Airflow
 from airflow import DAG
-from airflow.providers.standard.operators.python import PythonOperator
-from airflow.timetables.trigger import CronTriggerTimetable  #  Nouveau import Airflow 3.x
+from airflow.operators.python import PythonOperator
 
-#  Imports personnalisés
+# 📦 Imports personnalisés
 from extract import fetch_weather
 from transform import transform_weather_data
 from load import load_weather_data
@@ -26,12 +24,12 @@ default_args = {
     'retry_delay': timedelta(minutes=5)
 }
 
-#  Définition du DAG avec timetable Airflow 3.x
+# 📅 Définition du DAG
 with DAG(
-    dag_id='weather_pipeline',
+    dag_id='G5',
     description='Pipeline météo-tourisme quotidien',
     start_date=datetime(2025, 7, 5),
-    timetable=CronTriggerTimetable("0 0 * * *", timezone=timezone("UTC")),
+    schedule_interval="0 0 * * *",  # Tous les jours à minuit UTC
     default_args=default_args,
     catchup=False,
     tags=['weather', 'tourism', 'etl']
@@ -52,4 +50,5 @@ with DAG(
         python_callable=load_weather_data
     )
 
+    # ➡️ Ordre d'exécution : extract → transform → load
     extract_task >> transform_task >> load_task
